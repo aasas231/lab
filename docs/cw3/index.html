@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CW3 SurVis Literature Browser</title>
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; background: #f8fafc; color: #0f172a; }
+    header { background: #0f766e; color: white; padding: 2rem 3rem; }
+    main { padding: 2rem 3rem; display: grid; grid-template-columns: 310px 1fr; gap: 1.5rem; }
+    .panel { background: white; border: 1px solid #dbe3ef; border-radius: 18px; padding: 1rem; box-shadow: 0 8px 30px rgba(15,23,42,.06); }
+    button { display: block; width: 100%; margin: .35rem 0; padding: .6rem; border-radius: 10px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer; text-align: left; }
+    button.active { background: #ccfbf1; border-color: #0f766e; }
+    .paper { border-bottom: 1px solid #e2e8f0; padding: 1rem 0; }
+    .doi { color: #2563eb; }
+    .timeline { display: flex; align-items: end; gap: 12px; height: 150px; margin-top: 1rem; }
+    .bar { background: #2563eb; width: 42px; border-radius: 8px 8px 0 0; color: white; text-align: center; }
+    small { color: #475569; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Morphology-Aware Augmentation for Abstract Visual Reasoning</h1>
+  <p>CW3 SurVis-style literature browser for Tianshu Zhu, 20806817.</p>
+</header>
+<main>
+  <aside class="panel"><h2>Selectors</h2><div id="filters"></div></aside>
+  <section>
+    <div class="panel"><h2>Timeline</h2><div id="timeline" class="timeline"></div></div>
+    <div class="panel" style="margin-top:1rem"><h2>Reviewed Papers</h2><div id="papers"></div></div>
+  </section>
+</main>
+<script>
+let papers = [];
+let active = 'All';
+let cats = ['All'];
+function renderFilters() {
+  document.getElementById('filters').innerHTML = cats.map(c => `<button class="${active===c?'active':''}" onclick="active='${c}';render()">${c}</button>`).join('');
+}
+function renderTimeline(list) {
+  const counts = {};
+  list.forEach(p => counts[p.year] = (counts[p.year] || 0) + 1);
+  const years = Object.keys(counts).sort();
+  const max = Math.max(...Object.values(counts), 1);
+  document.getElementById('timeline').innerHTML = years.map(y => `<div><div class="bar" style="height:${30+110*counts[y]/max}px">${counts[y]}</div><small>${y}</small></div>`).join('');
+}
+function renderPapers(list) {
+  document.getElementById('papers').innerHTML = list.map(p => `<article class="paper"><h3>${p.authors} (${p.year})</h3><p><b>${p.title}</b></p><p><small>${p.category} - ${p.venue} - evidence: ${p.evidence}</small></p><p class="doi">https://doi.org/${p.doi}</p></article>`).join('');
+}
+function render() {
+  renderFilters();
+  const list = active === 'All' ? papers : papers.filter(p => p.category === active);
+  renderTimeline(list);
+  renderPapers(list);
+}
+fetch('papers.json').then(response => response.json()).then(data => {
+  papers = data;
+  cats = ['All', ...Array.from(new Set(papers.map(p => p.category)))];
+  render();
+});
+</script>
+</body>
+</html>
