@@ -1,7 +1,23 @@
 const userDefinedAuthorizedTags = {
-    "category:morphology_for_rpm": "Morphology-focused RPM augmentation",
-    "category:rpm_architectures": "RPM solver architectures",
-    "category:rpm_benchmark_extension": "RPM benchmark design and extensions",
-    "category:learned_augmentation": "Automated augmentation policy learning",
-    "category:patch_mixing_augmentation": "Patch/mixing augmentation"
-};
+  "category:learned_augmentation": {
+    "description": "Learned augmentation"
+  },
+  "category:morphology_for_rpm": {
+    "description": "Morphology for RPM"
+  },
+  "category:program_neural_symbolic_reasoning": {
+    "description": "Program/neural-symbolic reasoning"
+  },
+  "category:rpm_architectures": {
+    "description": "RPM architectures"
+  },
+  "category:visual_reasoning_benchmark": {
+    "description": "Visual reasoning benchmark"
+  },
+  "category:rpm_benchmark_extension": {
+    "description": "RPM benchmark extension"
+  },
+  "category:survey_and_taxonomy": {
+    "description": "Survey and taxonomy"
+  }
+}
